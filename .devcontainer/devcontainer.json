@@ -1,0 +1,32 @@
+{
+  "name": "homelab",
+  "features": {
+    "ghcr.io/rio/features/chezmoi:1": {}
+  },
+  "build": {
+    "context": ".",
+    "dockerfile": "Dockerfile",
+    "args": {
+      "HOST_UID": "${localEnv:UID}",
+      "HOST_GID": "${localEnv:GID}"
+    }
+  },
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "terminal.integrated.profiles.linux": {
+      "zsh": {
+        "path": "/usr/bin/zsh",
+        "args": "-1"
+      }
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/scripts/setup",
+  "forwardPorts": [],
+  "mounts": [
+    "source=${localEnv:HOME},target=/workspace/home,type=bind,consistency=cached"
+  ],
+  "runArgs": [],
+  "extensions": [
+    "ms-vscode-remote.remote-containers"
+  ]
+}

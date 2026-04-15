@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+log() { printf "[post-create] %s\n" "$*" >&2; }
+
+USER_NAME="$(whoami 2>/dev/null || echo vscode)"
+HOME_DIR="${HOME:-/home/${USER_NAME}}"
+log "Running as user: $USER_NAME (HOME=$HOME_DIR)"
+
+install_packages() {
+  /usr/local/bin/mise trust -a -y
+  /usr/local/bin/mise install -y
+}
+
+log "Installing packages..."
+install_packages
+
+if [ ! -d "$HOME_DIR/.oh-my-zsh" ]; then
+  log "Cloning oh-my-zsh into $HOME_DIR/.oh-my-zsh"
+  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME_DIR/.oh-my-zsh" || log "git clone failed"
+fi
+
+if [ ! -f "$HOME_DIR/.zshrc" ]; then
+  if [ -f "$HOME_DIR/.oh-my-zsh/templates/zshrc.zsh-template" ]; then
+    log "Installing .zshrc from oh-my-zsh template"
+    cp "$HOME_DIR/.oh-my-zsh/templates/zshrc.zsh-template" "$HOME_DIR/.zshrc" || true
+    # ensure ZSH variable points to the right location
+    sed -i "s|^export ZSH=.*|export ZSH=\"$HOME_DIR/.oh-my-zsh\"|" "$HOME_DIR/.zshrc" || true
+    chown "$USER_NAME:$USER_NAME" "$HOME_DIR/.zshrc" || true
+  fi
+fi
+
+log "Installation complete."
+
+exit 0
