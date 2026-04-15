@@ -1,3 +1,5 @@
 [tools]
 neovim = "0.12.1"
 node = "24"
+fzf = "latest"
+rg = "latest"

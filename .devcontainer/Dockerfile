@@ -7,7 +7,7 @@ COPY --from=jdxcode/mise /usr/local/bin/mise /usr/local/bin/
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
-  git curl ca-certificates sudo zsh \
+  git curl ca-certificates sudo zsh zsh-autosuggestions zsh-syntax-highlighting \
   && rm -rf /var/lib/apt/lists/* \
   && usermod -s /usr/bin/zsh vscode
 
