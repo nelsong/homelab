@@ -1,8 +1,5 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
-ENV http_proxy http://perceval.orange.com.do:8080
-ENV https_proxy http://perceval.orange.com.do:8080
-
 COPY --from=jdxcode/mise /usr/local/bin/mise /usr/local/bin/
 
 ARG DEBIAN_FRONTEND=noninteractive

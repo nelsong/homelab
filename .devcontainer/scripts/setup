@@ -4,8 +4,7 @@ set -euo pipefail
 log() { printf "[post-create] %s\n" "$*" >&2; }
 
 USER_NAME="$(whoami 2>/dev/null || echo vscode)"
-HOME_DIR="${HOME:-/home/${USER_NAME}}"
-log "Running as user: $USER_NAME (HOME=$HOME_DIR)"
+log "Running as user: $USER_NAME (HOME=$HOME)"
 
 install_packages() {
   /usr/local/bin/mise trust -a -y
@@ -15,19 +14,9 @@ install_packages() {
 log "Installing packages..."
 install_packages
 
-if [ ! -d "$HOME_DIR/.oh-my-zsh" ]; then
-  log "Cloning oh-my-zsh into $HOME_DIR/.oh-my-zsh"
-  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME_DIR/.oh-my-zsh" || log "git clone failed"
-fi
-
-if [ ! -f "$HOME_DIR/.zshrc" ]; then
-  if [ -f "$HOME_DIR/.oh-my-zsh/templates/zshrc.zsh-template" ]; then
-    log "Installing .zshrc from oh-my-zsh template"
-    cp "$HOME_DIR/.oh-my-zsh/templates/zshrc.zsh-template" "$HOME_DIR/.zshrc" || true
-    # ensure ZSH variable points to the right location
-    sed -i "s|^export ZSH=.*|export ZSH=\"$HOME_DIR/.oh-my-zsh\"|" "$HOME_DIR/.zshrc" || true
-    chown "$USER_NAME:$USER_NAME" "$HOME_DIR/.zshrc" || true
-  fi
+if [ ! -d "$HOME/.local/share/zap" ]; then
+  log "Cloning zap.zsh into $HOME/.local/share/zap"
+  git clone -b "master" https://github.com/zap-zsh/zap.git "$HOME/.local/share/zap"
 fi
 
 log "Installation complete."
