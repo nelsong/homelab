@@ -4,3 +4,12 @@ node = "24"
 fzf = "latest"
 rg = "latest"
 eza = "0.23.4"
+kubectl = "1.36.0"
+helm = "3.21.2"
+argocd = "v3.3.4"
+tmux = "3.6b"
+python = "3.14.6"
+ruby = "3.2.11"
+
+[settings.ruby]
+compile = false
