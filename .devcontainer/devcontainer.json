@@ -1,7 +1,11 @@
 {
   "name": "homelab",
   "features": {
-    "ghcr.io/rio/features/chezmoi:1": {}
+    "ghcr.io/rio/features/chezmoi:1": {},
+    "ghcr.io/devcontainers/features/terraform:1": {},
+    "ghcr.io/sliekens/devcontainer-features/codex:1": {
+      "version": "latest"
+    }
   },
   "build": {
     "context": ".",
@@ -11,13 +15,20 @@
       "HOST_GID": "${localEnv:GID}"
     }
   },
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "zsh",
-    "terminal.integrated.profiles.linux": {
-      "zsh": {
-        "path": "/usr/bin/zsh",
-        "args": "-1"
-      }
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/usr/bin/zsh",
+            "args": ["-1"]
+          }
+        }
+      },
+      "extensions": [
+        "ms-vscode-remote.remote-containers"
+      ]
     }
   },
   "postCreateCommand": "bash .devcontainer/scripts/setup",
@@ -25,8 +36,5 @@
   "mounts": [
     "source=${localEnv:HOME},target=/workspace/home,type=bind,consistency=cached"
   ],
-  "runArgs": [],
-  "extensions": [
-    "ms-vscode-remote.remote-containers"
-  ]
+  "runArgs": []
 }
