@@ -14,7 +14,5 @@ RUN if command -v mise >/dev/null 2>&1; then \
   curl -sfL https://get.chezmoi.io | sh -s -- -b /usr/local/bin || true; \
   fi
 
-
-
 RUN echo 'eval "$(mise activate bash)"' >> /etc/skel/.bashrc && \
   echo 'eval "$(mise activate zsh)"' >> /etc/skel/.zshrc
